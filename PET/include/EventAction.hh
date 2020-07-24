@@ -18,9 +18,11 @@ class EventAction : public G4UserEventAction
     virtual ~EventAction();
     virtual void BeginOfEventAction(const G4Event*);
     virtual void EndOfEventAction(const G4Event*);
+    double n;
     
   private:
     std::ofstream output;
+
 
 };
 

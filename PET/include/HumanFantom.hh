@@ -3,6 +3,8 @@
 #include "G4Material.hh"
 #include "G4LogicalVolume.hh"
 #include "G4PVPlacement.hh"
+#include "G4PSNofSecondary.hh"
+
 
 class HumanFantom
 {
@@ -13,6 +15,7 @@ class HumanFantom
                         const G4String &pName, 
                         G4LogicalVolume *pMotherLogical,  
                         G4int pCopyNo);
+    void ConstructSDandField();
     
     private:
     void ConstructHumanFantom(double heigh, double radius);
@@ -20,7 +23,7 @@ class HumanFantom
     G4Material* MakeWater();
     
     G4LogicalVolume* fantomLogVol;
-    G4LogicalVolume* ConstructSpine(); 
+    G4LogicalVolume* ConstructSpine();
 
 
 };

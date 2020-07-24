@@ -12,6 +12,8 @@
 #include "G4VPhysicalVolume.hh"
 #include "G4NistManager.hh"  //wbudowane materiały
 #include "G4Material.hh" //materiały
+#include "Scintillator.hh"
+#include "HumanFantom.hh"
 
 class DetectorConstruction : public G4VUserDetectorConstruction
 {
@@ -32,6 +34,8 @@ class DetectorConstruction : public G4VUserDetectorConstruction
     
     void ConstructHumanFantom();
     void ConstructScintillator();
+    Scintillator *ring;
+    HumanFantom* fantom;
 
    // G4LogicalVolume* ConstructAluLayer();
     //G4LogicalVolume* ConstructTeflonLayer();

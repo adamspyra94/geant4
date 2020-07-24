@@ -22,13 +22,22 @@ void SteppingAction::UserSteppingAction(const G4Step* theStep)
 {
     G4Track* theTrack = theStep->GetTrack();
     G4String volumeName = theTrack->GetVolume()->GetName();
+    if(volumeName == "fantom")
+    {
+        auto secondaries = theStep->GetSecondaryInCurrentStep();
+    
+        nrOfSec+=secondaries->size();
+        //std::cout << nrOfSec << std::endl;
+    }
+    /*G4Track* theTrack = theStep->GetTrack();
+    G4String volumeName = theTrack->GetVolume()->GetName();
    
     if (volumeName == "spinePhys")
     {
     G4double energia = theStep->GetTotalEnergyDeposit();//GetDeltaEnergy();
     EDepSpine += (energia/keV);
     //PrintStep(theStep);
-    }
+    }*/
 }
 
 void SteppingAction::PrintStep(const G4Step* theStep)
@@ -54,3 +63,5 @@ void SteppingAction::PrintStep(const G4Step* theStep)
 
     G4double SteppingAction::EDepSpine=0;
     G4double SteppingAction::EDepSpineTotal=0;
+    G4int SteppingAction::nrOfSec=0;
+    G4int SteppingAction::nrOfSecTotal=0;

@@ -1,4 +1,4 @@
-
+#include "NaISD.hh"
 #include "Scintillator.hh"
 #include "G4Tubs.hh"
 #include "G4NistManager.hh"
@@ -11,11 +11,10 @@
 
 Scintillator::Scintillator(int det_number, double rMin, double rMax, double length)
 {
+    NaILogic=0;
     ConstructCylinder(rMin, rMax, length);
-//    ConstructAluLayer();
-//    ConstructTeflonLayer();
-//   ConstructNaICrystal();
     ConstructNaI(det_number, rMin);
+    //ConstructSDandField();
 }
 
 void Scintillator::ConstructCylinder(double rMin, double rMax, double length)
@@ -73,7 +72,7 @@ G4LogicalVolume* Scintillator::ConstructNaICrystal()
 	G4NistManager* man=G4NistManager::Instance();
 	G4Tubs* NaISolid = new G4Tubs("NaISolid", rMin, rMax, halflength, 0*deg, 360*deg);
 	G4Material* NaI = man->FindOrBuildMaterial("G4_SODIUM_IODIDE");
-	G4LogicalVolume* NaILogic = new G4LogicalVolume(NaISolid, NaI, "NaILogic");
+	NaILogic = new G4LogicalVolume(NaISolid, NaI, "NaILogic");
 	G4VisAttributes* NaIVis = new G4VisAttributes(G4Colour(0.5,0.5,0));
      NaIVis->SetForceAuxEdgeVisible(true);
      NaIVis->SetForceSolid(true);
@@ -117,4 +116,20 @@ void Scintillator::Place(G4RotationMatrix *pRot,
 {
     new G4PVPlacement(pRot, tlate, CylinderLogVol, pName,  pMotherLogical, 0,pCopyNo);
 }
+
+void Scintillator::ConstructSDandField()
+{
+    /*G4MultiFunctionalDetector* detector = new G4MultiFunctionalDetector("naISensitiveDet");
+    G4int depth = 2;
+    G4VPrimitiveScorer* energyDepScorer = new G4PSEnergyDeposit("eDep",depth);       detector->RegisterPrimitive(energyDepScorer);
+    NaILogic->SetSensitiveDetector(detector);
+    G4SDManager* SDmanager = G4SDManager::GetSDMpointer();
+    SDmanager->AddNewDetector(detector);*/
+    
+    NaISD* naISD = new NaISD("naISD", "eDep", 2);
+    G4SDManager* SDman = G4SDManager::GetSDMpointer();
+    SDman->AddNewDetector(naISD);
+    NaILogic->SetSensitiveDetector(naISD);
+    
+}	
 

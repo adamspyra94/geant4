@@ -25,6 +25,8 @@
 DetectorConstruction::DetectorConstruction()
 {
     worldLogic = 0L;
+    ring = 0L;
+    fantom = 0L;
     fantomLogVol=0L;
     CylinderLogVol=0L;
     man = G4NistManager::Instance();
@@ -49,6 +51,7 @@ G4VPhysicalVolume* DetectorConstruction::Construct()
     ConstructHumanFantom();
     ConstructScintillator();
     //ConstructNaI();
+    ConstructSDandField();
     
     return worldPhys;
 }
@@ -78,7 +81,7 @@ void DetectorConstruction::ConstructHumanFantom()
 {   
     G4double radiusMax = 15*cm;
     G4double length = 170*cm; 
-    HumanFantom* fantom= new HumanFantom(length, radiusMax);
+    fantom= new HumanFantom(length, radiusMax);
      
     G4ThreeVector pos_fantom(0,0,0);
     G4RotationMatrix *pRot = new G4RotationMatrix();
@@ -91,7 +94,7 @@ void DetectorConstruction::ConstructScintillator()
     G4double rMax = 55*cm;
     G4double length = 15*cm;
     G4int det_number = 36; 
-    Scintillator* ring= new Scintillator(det_number, rMin, rMax, length);
+    ring= new Scintillator(det_number, rMin, rMax, length);
      
     G4ThreeVector pos_ring(0,0,0);
     //G4RotationMatrix *pRot = new G4RotationMatrix();
@@ -101,8 +104,8 @@ void DetectorConstruction::ConstructScintillator()
 		
 void DetectorConstruction::ConstructSDandField() 
 {
-
-
+    ring->ConstructSDandField();
+    fantom->ConstructSDandField();
 }
 
 

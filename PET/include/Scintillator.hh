@@ -2,6 +2,11 @@
 #define Scintillator_H 1
 #include "G4Material.hh"
 #include "G4LogicalVolume.hh"
+#include "G4MultiFunctionalDetector.hh"
+#include "G4VPrimitiveScorer.hh"
+#include "G4SDManager.hh"
+#include "G4PSEnergyDeposit.hh"
+
 
 class Scintillator
 {
@@ -12,6 +17,7 @@ class Scintillator
                         const G4String &pName, 
                         G4LogicalVolume *pMotherLogical,  
                         G4int pCopyNo);
+    void ConstructSDandField();
     
     private:
 
@@ -21,6 +27,7 @@ class Scintillator
     G4LogicalVolume* ConstructNaICrystal();
     G4LogicalVolume* CylinderLogVol;
     void ConstructNaI(int det_number, double rMin);
+    G4LogicalVolume* NaILogic;
 
 
 };

@@ -5,13 +5,19 @@
 #include "G4VisAttributes.hh"
 #include "globals.hh"
 #include "G4SystemOfUnits.hh" //jednostki
-#include "G4PVPlacement.hh" 
+#include "G4PVPlacement.hh"
+#include "G4MultiFunctionalDetector.hh"
+#include "G4VPrimitiveScorer.hh"
+#include "G4SDManager.hh"
+#include "G4PSNofSecondary.hh"
 
 
 HumanFantom::HumanFantom(double heigh, double radius)
 {
+    fantomLogVol=0L;
     ConstructHumanFantom(heigh, radius);
     ConstructSpine(heigh);
+    //ConstructSDandField();
 }
 
 void HumanFantom::ConstructHumanFantom(double heigh, double radius)
@@ -73,5 +79,15 @@ void HumanFantom::Place(G4RotationMatrix *pRot,
                         G4int pCopyNo)
 {
     new G4PVPlacement(pRot, tlate, fantomLogVol, pName,  pMotherLogical, 0,pCopyNo);
+}
+
+void HumanFantom::ConstructSDandField()
+{
+    G4MultiFunctionalDetector* detector2 = new G4MultiFunctionalDetector("FantomSensitiveDet");
+    G4int depth = 0;
+    G4VPrimitiveScorer* nrOfSecondaries = new G4PSNofSecondary("sec",depth);         detector2->RegisterPrimitive(nrOfSecondaries);
+    fantomLogVol->SetSensitiveDetector(detector2);
+    G4SDManager* SDmanager2 = G4SDManager::GetSDMpointer();
+    SDmanager2->AddNewDetector(detector2);
 }
 
